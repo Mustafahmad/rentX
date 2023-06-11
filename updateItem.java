@@ -1,4 +1,4 @@
-package com.example.rentxapplication;
+package com.example.rentxapplication.update;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -16,11 +16,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.rentxapplication.R;
 import com.example.rentxapplication.models.bikeModels;
+import com.example.rentxapplication.rentBike;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,8 +36,8 @@ public class updateItem extends AppCompatActivity {
 
     ImageView updateImage;
     Button updateButton;
-    EditText updateTitle, updatePrice, updateArea,updateNumber;
-    String title, price, area,number;
+    EditText updateTitle, updatePrice, updateArea,updateNumber,updateDescription;
+    String title, price, area,number,desc;
     String imageUrl;
     String key, oldImageURL;
     Uri uri;
@@ -53,6 +54,8 @@ public class updateItem extends AppCompatActivity {
         updatePrice = findViewById(R.id.updatePrice);
         updateArea = findViewById(R.id.updateArea);
         updateNumber = findViewById(R.id.updateNumber);
+        updateDescription = findViewById(R.id.updateDescription);
+
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -74,6 +77,8 @@ public class updateItem extends AppCompatActivity {
             updateTitle.setText(bundle.getString("Title"));
             updatePrice.setText(bundle.getString("Price"));
             updateArea.setText(bundle.getString("Area"));
+            updateNumber.setText(bundle.getString("Number"));
+            updateDescription.setText(bundle.getString("Description"));
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
         }
@@ -124,7 +129,9 @@ public class updateItem extends AppCompatActivity {
         price = updatePrice.getText().toString().trim();
         area = updateArea.getText().toString();
         number =updateNumber.getText().toString();
-        bikeModels dataClass = new bikeModels(title, price, area,number, imageUrl);
+        desc = updateDescription.getText().toString();
+
+        bikeModels dataClass = new bikeModels(title, price, area,number,desc, imageUrl);
         databaseReference.setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
